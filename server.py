@@ -10,7 +10,7 @@ def predict(gender, senior_citizen, partner, dependents, tenure_months, phone_se
             paperless_billing, monthly_charges, total_charges, payment_method_credit_card,
             payment_method_electronic_check, payment_method_mailed_check,contract_one_year, 
             contract_two_year, internet_services_dsl, internet_service_fibre):
-    
+    #step 5: make the predictions based on passed data
     prediction=model.predict([[gender, senior_citizen, partner, dependents, tenure_months, phone_service,
                                multiple_lines,online_security, online_backup, device_protection,
                                tech_support, streaming_tv, streaming_movies, paperless_billing, 
@@ -20,7 +20,7 @@ def predict(gender, senior_citizen, partner, dependents, tenure_months, phone_se
     if prediction == 0:
         return 'Customer will NOT Churn'
     else:
-        return 'CUSTOMER WILL CHURN. TAKE ACTION... '
+        return 'CUSTOMER WILL CHURN. TAKE... '
     
 def main():
     st.title("Telecom Churn Prediction")
@@ -39,6 +39,7 @@ def main():
     var_contract = ("Month-to-month", "One year", "Two year")
     var_payment_m = ("Credit card (automatic)", "Bank transfer (automatic)", "Electronic check", "Mailed check")
 
+    #step 1: we read all the data here
     gender = st.sidebar.selectbox("Customer's Gender", var_gender)
     senior_citizen = st.sidebar.selectbox("Are you a Senior Citizen?", var_bool)
     partner = st.sidebar.selectbox("Partner", var_bool)
@@ -61,7 +62,8 @@ def main():
     total_charges = st.sidebar.number_input("Total Charges")
     monthly_charges = st.sidebar.number_input("Monthly Charges")
     #cltv = st.sidebar.number_input("Customer Lifetime Value(CLTV)")
-
+    
+    #step3: functions to change the category as per requirements of the model
     # Binary variables
     def create_binary(content):
         if content == "Male":
@@ -109,6 +111,9 @@ def main():
         return contract_one_year, contract_two_year
 
     def convert_payment_method(content):
+        payment_method_credit_card = 0
+        payment_method_electronic_check = 0
+        payment_method_mailed_check = 0
         if content == "Credit card":
             payment_method_credit_card = 1
             payment_method_electronic_check = 0
@@ -127,6 +132,7 @@ def main():
             payment_method_mailed_check = 1
         return payment_method_credit_card, payment_method_electronic_check, payment_method_mailed_check
     
+    #step2: convert the data into the required format of the model. ie convert category to binary
     gender = create_binary(gender)
     senior_citizen = create_binary(senior_citizen)
     partner = create_binary(partner)
@@ -148,6 +154,7 @@ def main():
     total_charges=total_charges
 
     result=""
+    #step4: pass the created the data to the model.
     if st.button("Predict"):
         result=predict(gender, senior_citizen, partner, dependents, tenure_months, phone_service, 
                        multiple_lines, online_security, online_backup, device_protection, 

@@ -1,0 +1,20 @@
+#run streamlit
+streamlit run server.py
+
+#run python
+python file.py
+
+WORKDIR /diabetes_app
+
+#create requirements.txt
+pip freeze > requirements.txt
+
+#first: model.py
+in this step we again build the model from the training data. Once done we save the model through pickle.
+
+#second server.py
+load the saved pickle file and then start with the streamlit part. Stream lit is used to render the front end
+
+in the server file make all the input part.
+then once all data is loaded move to changing the categories, like converty gender to binary.
+then pass all the set data to model for prediction.
